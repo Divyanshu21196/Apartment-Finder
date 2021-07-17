@@ -1,13 +1,25 @@
 <div class="container">
     <h2 class="text-center" style="color: #354559;">Apartment-Finder</h2>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label>Sort By Name</label>
             <input type="text" class="form-control" #search (keyup)="onKeyUpSearch(search.value)" placeholder="Search">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label>Sort By Price</label>
             <input type="number"  class="form-control" #price min="0" (keyup)="onKeyUpPrice(price.value)" placeholder="Search by price">
+        </div>
+        <div class="col-md-4">
+            <label>Select</label>
+            <ng-multiselect-dropdown
+            [placeholder]="'Select'"
+            [settings]="dropdownSettings"
+            [data]="dropdownList"
+            [(ngModel)]="selectedItems"
+            (onSelect)="onItemSelect($event)"
+            (onDeSelect)="close()"
+            >
+            </ng-multiselect-dropdown>
         </div>
     </div>    
 </div>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Apartments} from '../myworld';
 import { LocalDataSource } from 'ng2-smart-table';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+
 
 @Component({
   selector: 'app-sort-search',
@@ -46,25 +48,25 @@ export class SortSearchComponent implements OnInit {
 
       noOfBedrooms:{
         title: 'Number of Bedrooms',
-        type: 'string',
+        type: 'integer',
         filter:false,
       },
 
       noOfBathroom:{
         title: 'Number Of Bathrooms',
-        type: 'string',
+        type: 'integer',
         filter:false,
       },
 
       noOfHalfBath:{
       title: 'Nummber Of Half-Bath',
-      type: 'string',
+      type: 'integer',
       filter:false,
      },
 
      price:{
         title: 'Price',
-        type: 'string',
+        type: 'integer',
         filter:false,
       },    
 
@@ -74,11 +76,42 @@ export class SortSearchComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   finalArr=[];
   search:string;
+  dropdownList = [{item_id:1,item_text:"1BHK"},{item_id:2,item_text:"2BHK"},{item_id:3,item_text:"4BHK"}];
+  selectedItems = [];
+  dropdownSettings = {};
 
   constructor() { }
 
   ngOnInit(): void {
     this.makeListData();
+
+    this.dropdownSettings = {
+      singleSelection: true,
+      idField: 'item_id',
+      textField: 'item_text',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: false,
+      enableCheckAll:false
+    };
+  }
+ 
+  
+  onItemSelect(item: any) {
+    if(item){
+      let demo = [];
+      demo.push(item.item_text);
+      let data = this.finalArr.filter(e=> demo.includes(e.configName));
+       this.source.load(data);
+    }else{
+      return;
+    }
+    console.log(item);
+  }
+  close(){
+    if(this.selectedItems.length == 0){
+      this.makeListData()
+    }
   }
 
   onKeyUpSearch(query){
@@ -109,7 +142,7 @@ export class SortSearchComponent implements OnInit {
 
   onKeyUpPrice(price){
     if(price){
-      console.log(price);
+      // console.log(price);
       let data = this.finalArr.filter(e=>e.price > parseInt(price));
        // console.log(this.finalArr);
        this.source.load(data);

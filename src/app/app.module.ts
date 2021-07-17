@@ -9,6 +9,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators,ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { SortSearchComponent } from './component/sort-search/sort-search.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 
 
 @NgModule({
@@ -22,6 +24,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     BrowserAnimationsModule,
     NgbModule,
     FormsModule,
+    NgMultiSelectDropDownModule.forRoot(),
     Ng2SmartTableModule,
     ReactiveFormsModule,
     ToastrModule.forRoot(),
