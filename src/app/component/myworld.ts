@@ -1,4 +1,5 @@
-export const Apartments = [
+
+export const Apartments= [
    {
        id : 1,
        name: "Mercury",
