@@ -93,8 +93,8 @@ export const Apartments= [
                         configName:'2BHK',
                         minPrice:1000000
                      },                 {
-                         id:3,
-                         name:'229 Lynn Street - Low apartment',
+                         id:2,
+                         name:'229 Vittorie - Low apartment',
                          numberOfBedrooms:1,
                          numberOfBathrooms:1,
                          numberOfhalfBahrooms:1,

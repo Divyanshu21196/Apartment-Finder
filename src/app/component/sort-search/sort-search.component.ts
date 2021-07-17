@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Apartments} from '../myworld';
+import {DataApartmentService} from '../../services/data-apartment.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
@@ -10,6 +10,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
   styleUrls: ['./sort-search.component.css']
 })
 export class SortSearchComponent implements OnInit {
+  demo=[];
   settings = {
     mode: 'external',
     actions: {
@@ -38,8 +39,6 @@ export class SortSearchComponent implements OnInit {
         type: 'string',
         filter:false,
       },
-
-
       configName: {
         title: 'Configuration',
         type: 'string',
@@ -80,13 +79,12 @@ export class SortSearchComponent implements OnInit {
   selectedItems = [];
   dropdownSettings = {};
 
-  constructor() { }
+  constructor(private data:DataApartmentService) { }
 
   ngOnInit(): void {
     this.makeListData();
-
     this.dropdownSettings = {
-      singleSelection: true,
+      singleSelection: false,
       idField: 'item_id',
       textField: 'item_text',
       unSelectAllText: 'UnSelect All',
@@ -99,20 +97,26 @@ export class SortSearchComponent implements OnInit {
   
   onItemSelect(item: any) {
     if(item){
-      let demo = [];
-      demo.push(item.item_text);
-      let data = this.finalArr.filter(e=> demo.includes(e.configName));
+      this.demo.push(item.item_text);
+      let data = this.finalArr.filter(e=> this.demo.indexOf(e.configName)!==-1);
        this.source.load(data);
     }else{
       return;
     }
     console.log(item);
   }
-  close(){
-    if(this.selectedItems.length == 0){
-      this.makeListData()
-    }
-  }
+  close(item:any){
+    console.log(this.demo);
+    let index = this.demo.indexOf(item.item_text);
+   console.log(index);
+   if (index !== -1) this.demo.splice(index, 1);
+   if(this.demo.length != 0){
+    let data = this.finalArr.filter(e=> this.demo.indexOf(e.configName)!==-1);
+    this.source.load(data);
+   }else{
+     this.makeListData()
+   }
+}
 
   onKeyUpSearch(query){
     if(query){
@@ -142,9 +146,7 @@ export class SortSearchComponent implements OnInit {
 
   onKeyUpPrice(price){
     if(price){
-      // console.log(price);
       let data = this.finalArr.filter(e=>e.price > parseInt(price));
-       // console.log(this.finalArr);
        this.source.load(data);
     }else{
       return;
@@ -152,12 +154,15 @@ export class SortSearchComponent implements OnInit {
   }
 
   makeListData(){
-    for(let i= 0 ; i<Apartments.length; i++){
-      for(let j=0;j<Apartments[i].buildings.length;j++)
-        for(let k=0;k<Apartments[i].buildings[j].property.length;k++){
-          let obj = {'name':Apartments[i].buildings[j].property[k].name,'buildingName':Apartments[i].buildings[j].name,'towerName':Apartments[i].name,'configName':Apartments[i].buildings[j].property[k].configName,'noOfBedrooms':Apartments[i].buildings[j].property[k].numberOfBedrooms,'noOfBathroom':Apartments[i].buildings[j].property[k].numberOfBathrooms,'noOfHalfBath':Apartments[i].buildings[j].property[k].numberOfhalfBahrooms,'price':Apartments[i].buildings[j].property[k].minPrice};
+    const apartmentArr = this.data.getApartmentData();
+    this.finalArr=[];
+    for(let i= 0 ; i<apartmentArr.length; i++){
+      for(let j=0;j<apartmentArr[i].buildings.length;j++){
+        for(let k=0;k<apartmentArr[i].buildings[j].property.length;k++){
+          let obj = {'name':apartmentArr[i].buildings[j].property[k].name,'buildingName':apartmentArr[i].buildings[j].name,'towerName':apartmentArr[i].name,'configName':apartmentArr[i].buildings[j].property[k].configName,'noOfBedrooms':apartmentArr[i].buildings[j].property[k].numberOfBedrooms,'noOfBathroom':apartmentArr[i].buildings[j].property[k].numberOfBathrooms,'noOfHalfBath':apartmentArr[i].buildings[j].property[k].numberOfhalfBahrooms,'price':apartmentArr[i].buildings[j].property[k].minPrice};
           this.finalArr.push(obj);
         }
+      }
     }
     this.source.load(this.finalArr);
     // console.log(data);

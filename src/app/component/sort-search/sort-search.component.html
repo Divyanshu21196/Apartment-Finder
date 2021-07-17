@@ -17,7 +17,7 @@
             [data]="dropdownList"
             [(ngModel)]="selectedItems"
             (onSelect)="onItemSelect($event)"
-            (onDeSelect)="close()"
+            (onDeSelect)="close($event)"
             >
             </ng-multiselect-dropdown>
         </div>
