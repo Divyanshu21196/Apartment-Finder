@@ -1,0 +1,22 @@
+:host /deep/ ng2-smart-table thead > tr > th  { 
+    background-color:#354559;  
+}
+
+:host /deep/ ng2-smart-table a { 
+    color:#fff;  
+}
+
+:host /deep/ ng2-smart-table .ng2-smart-pagination[_ngcontent-thw-c77] {
+    display: inline-flex;
+    font-size: .875em;
+    padding: 33px 500px !important;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
